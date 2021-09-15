@@ -4,3 +4,7 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: password
+  app:
+    image: php:7.4-fpm
+  web:
+    image: nginx:1.20
