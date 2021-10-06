@@ -1,13 +1,14 @@
 version: "3.8"
 services:
   web:
-    image: nginx:1.20
+    build:
+      context: ./conf/nginx
     ports:
       - 8080:80
     volumes:
       - type: bind
         source: ./src
-        target: /var/www/tanavel-angya
+        target: /var/www/laravel-angya
       - type: bind
         source: ./conf/nginx/nginx.conf
         target: /etc/nginx/nginx.conf
@@ -16,11 +17,13 @@ services:
         target: /etc/nginx/conf.d/default.conf
 
   app:
-    image: php:7.4-fpm
+    build:
+      context: ./conf/php
+    working_dir: /var/www/laravel-angya
     volumes:
       - type: bind
         source: ./src
-        target: /var/www/tanavel-angya
+        target: /var/www/laravel-angya
 
   db:
     image: mysql:5.7
@@ -29,6 +32,7 @@ services:
         source: db_data
         target: /var/lib/mysql
     environment:
+      MYSQL_DATABASE: laravel-angya
       MYSQL_ROOT_PASSWORD: password
 
 volumes:
